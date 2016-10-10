@@ -57,15 +57,26 @@ public class LocationPullService extends IntentService {
                 Log.e("INFO", location.toString());
             }
 
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+                Log.e("INFO", "Status Changed");
+            }
 
             public void onProviderEnabled(String provider) {}
 
             public void onProviderDisabled(String provider) {}
         };
         try {
-            // Register the listener with the Location Manager to receive location updates
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            //
+            if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
+                Log.e("INFO", "using NETWORK_PROVIDER");
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            }
+
+            if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
+                Log.e("INFO", "using GPS_PROVIDER");
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }
+
             Log.e("INFO", "TRYING REQUEST LOCATION");
         } catch (SecurityException e){
             Log.e("ERROR", "ALLOW ME PLEASE");
