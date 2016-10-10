@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         handlePermissions();
-        LocationPullService.startActionPullLocation(this);
+        handleLocations();
     }
 
     /**
@@ -48,6 +48,42 @@ public class MainActivity extends AppCompatActivity {
         //Location Persmussion
         if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  }, 1);
+        }
+    }
+
+
+    private void handleLocations(){
+        Log.e("INFO", "Hello FROM PULL LOCATION ACTION");
+
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                LocationPullService.startActionPullLocation(MainActivity.this, location);
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+                Log.e("INFO", "Status Changed");
+            }
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+        try {
+            //
+            if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
+                Log.e("INFO", "using NETWORK_PROVIDER");
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            }
+
+            if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
+                Log.e("INFO", "using GPS_PROVIDER");
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }
+        } catch (SecurityException e){
+            Log.e("ERROR", "ALLOW ME PLEASE");
         }
     }
 

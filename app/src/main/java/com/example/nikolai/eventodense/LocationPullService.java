@@ -19,6 +19,8 @@ public class LocationPullService extends IntentService {
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_PULL_LOCATION = "com.example.nikolai.eventodense.action.PullLocation";
 
+    private static final String LOCATION_PARAM = "com.example.nikolai.eventodense.extra.location";
+
     public LocationPullService() {
         super("LocationPullService");
     }
@@ -29,16 +31,19 @@ public class LocationPullService extends IntentService {
      *
      * @see IntentService
      */
-    public static void startActionPullLocation(Context context) {
+    public static void startActionPullLocation(Context context, Location param1) {
         Intent intent = new Intent(context, LocationPullService.class);
         intent.setAction(ACTION_PULL_LOCATION);
+        intent.putExtra(LOCATION_PARAM, param1);
+
         context.startService(intent);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            handleActionPullLocation();
+            final Location param1 = intent.getParcelableExtra(LOCATION_PARAM);
+            handleActionPullLocation(param1);
         }
     }
 
@@ -46,40 +51,8 @@ public class LocationPullService extends IntentService {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private void handleActionPullLocation() {
-        Log.e("INFO", "Hello FROM PULL LOCATION ACTION");
-
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-        LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
-                Log.e("INFO", location.toString());
-            }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-                Log.e("INFO", "Status Changed");
-            }
-
-            public void onProviderEnabled(String provider) {}
-
-            public void onProviderDisabled(String provider) {}
-        };
-        try {
-            //
-            if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
-                Log.e("INFO", "using NETWORK_PROVIDER");
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-            }
-
-            if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
-                Log.e("INFO", "using GPS_PROVIDER");
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            }
-
-            Log.e("INFO", "TRYING REQUEST LOCATION");
-        } catch (SecurityException e){
-            Log.e("ERROR", "ALLOW ME PLEASE");
-        }
+    private void handleActionPullLocation(Location location) {
+        Log.e("INFO", "YAYAYAYAYA");
+        Log.e("INFO", location.toString());
     }
 }
