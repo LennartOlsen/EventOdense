@@ -24,8 +24,9 @@
         </activity>
 
         <service
-            android:name=".LocationPullService"
-            android:exported="false" />
+            android:name=".LocationService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
