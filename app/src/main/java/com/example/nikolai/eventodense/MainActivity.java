@@ -20,12 +20,16 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    DatabaseHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        db = new DatabaseHelper(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
                 LocationPullService.startActionPullLocation(MainActivity.this, location);
+                // Is this the place to save data to the database??
+                db.insertData(String.valueOf(location.getLatitude()) +", "+ String.valueOf(location.getLongitude()));
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {

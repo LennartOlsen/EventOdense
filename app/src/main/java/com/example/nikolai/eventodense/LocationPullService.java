@@ -1,11 +1,13 @@
 package com.example.nikolai.eventodense;
 
+import android.annotation.TargetApi;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,6 +16,7 @@ import android.util.Log;
  * a service on a separate handler thread.
  * helper methods.
  */
+@TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class LocationPullService extends IntentService {
 
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
