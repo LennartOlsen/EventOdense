@@ -1,4 +1,4 @@
-package com.example.nikolai.eventodense;
+package com.example.nikolai.eventodense.services;
 
 import android.app.Service;
 import android.content.Context;
@@ -6,19 +6,30 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 
 public class LocationService extends Service {
 
     private final String TAG = "LocationService";
+    private static final String EVENTID = "com.example.nikolai.eventodense.services.extra.LocationService.EventID";
 
     private LocationManager mLocationManager = null;
     private static final int LOCATION_INTERVAL = 0;//1000;
     private static final float LOCATION_DISTANCE = 0;//10f;
+
+    private String eventId;
+
+    /**
+     * Starts this service to perform action Foo with the given parameters. If
+     * the service is already performing a task this action will be queued.
+     */
+    // TODO: Customize helper method
+    public static void startLocationService(Context context, String eventID) {
+        Intent intent = new Intent(context, LocationService.class);
+        intent.putExtra(EVENTID, eventID);
+        context.startService(intent);
+    }
 
     // Handler that receives messages from the thread
     private class LocationListener implements android.location.LocationListener
@@ -34,8 +45,8 @@ public class LocationService extends Service {
         @Override
         public void onLocationChanged(Location location)
         {
-            Log.e(TAG, "onLocationChanged: " + location);
             mLastLocation.set(location);
+            LocationHandleIntent.startActionLocationHandle(LocationService.this, location, this.eventId, 123456);
         }
 
         @Override
@@ -57,6 +68,10 @@ public class LocationService extends Service {
         }
     }
 
+    public void StartLocationHandle(){
+
+    }
+
 
 
     LocationListener[] mLocationListeners = new LocationListener[] {
@@ -68,6 +83,7 @@ public class LocationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         Log.e(TAG, "onStartCommand");
+        this.eventId = intent.getStringExtra(this.EVENTID);
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }

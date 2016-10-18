@@ -1,4 +1,4 @@
-package com.example.nikolai.eventodense;
+package com.example.nikolai.eventodense.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,6 +14,8 @@ import java.io.Console;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    private final String TAG = "DatabaseHelper";
+
     private static final String DATABASE_NAME = "location.db";
     private static final String TABLE_NAME = "location_table";
     public static final String COL_1 = "ID";
@@ -22,6 +24,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
+    }
+
+    private static DatabaseHelper instance;
+
+    public static synchronized DatabaseHelper getHelper(Context context)
+    {
+        if (instance == null)
+            instance = new DatabaseHelper(context);
+
+        return instance;
     }
 
     @Override

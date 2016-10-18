@@ -4,9 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,6 +19,18 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.nikolai.eventodense.models.Collection;
+import com.example.nikolai.eventodense.models.Point;
+import com.example.nikolai.eventodense.services.HttpService;
+import com.example.nikolai.eventodense.services.LocationService;
+import com.example.nikolai.eventodense.utils.DatabaseHelper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        db = new DatabaseHelper(this);
+        //db = new DatabaseHelper(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
         if(handleLocationPermissions()){
             startLocationService();
         }
+
+        //HttpService.startActionFoo(this, "http://google.com");
+        Collection coll = new Collection();
+        Point p = new Point(55.2, 10, 1822058, 20);
+        coll.addData(p);
+        coll.setId("123546");
+        coll.setEventID("88080");
+        System.out.println(coll.toJson());
     }
 
     /**
@@ -109,8 +129,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * TODO : Handle eventIds properly
+     */
     private void startLocationService(){
-        Intent intent = new Intent(this, LocationService.class);
-        startService(intent);
+        LocationService.startLocationService(this, "EventOdense");
     }
 }
