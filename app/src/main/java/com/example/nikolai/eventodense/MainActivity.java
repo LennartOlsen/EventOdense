@@ -1,12 +1,7 @@
 package com.example.nikolai.eventodense;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,23 +9,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.nikolai.eventodense.models.Collection;
 import com.example.nikolai.eventodense.models.Point;
-import com.example.nikolai.eventodense.services.HttpService;
 import com.example.nikolai.eventodense.services.LocationService;
 import com.example.nikolai.eventodense.utils.DatabaseHelper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -66,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         coll.setId("123546");
         coll.setEventID("88080");
         System.out.println(coll.toJson());
+
+        tileButtonHandler();
     }
 
     /**
@@ -134,5 +124,44 @@ public class MainActivity extends AppCompatActivity {
      */
     private void startLocationService(){
         LocationService.startLocationService(this, "EventOdense");
+    }
+
+    //handles all action related to clicking on each til button.
+    private void tileButtonHandler() {
+
+        Button tileButton1 = (Button) findViewById(R.id.button_tile1);
+        tileButton1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+            }
+        });
+
+        Button tileButton2 = (Button) findViewById(R.id.button_tile2);
+        tileButton1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+            }
+        });
+
+        Button tileButton3 = (Button) findViewById(R.id.button_tile3);
+        tileButton1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+            }
+        });
+
+        Button tileButton4 = (Button) findViewById(R.id.button_tile4);
+        tileButton1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+            }
+        });
+
+        Button tileButton5 = (Button) findViewById(R.id.button_tile5);
+        tileButton1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+            }
+        });
     }
 }
