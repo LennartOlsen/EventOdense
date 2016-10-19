@@ -1,12 +1,6 @@
 package com.example.nikolai.eventodense.models;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
-
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by lennartolsen on 17/10/2016.

@@ -6,8 +6,8 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import com.example.nikolai.eventodense.models.Collection;
 import com.example.nikolai.eventodense.models.Point;
+import com.example.nikolai.eventodense.utils.DeviceUUID;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -61,11 +61,16 @@ public class LocationHandleIntent extends IntentService {
      * parameters.
      */
     private void handleActionLocationHandle(Location location, String event_id, int timestamp) {
-        Collection coll = new Collection();
-        coll.setEventID(event_id);
-        Point p = new Point(location.getLatitude(), location.getLongitude(), timestamp, location.getAccuracy());
-        coll.addData(p);
 
-        Log.e(TAG, coll.toJson());
+        Point p = new Point("",
+                location.getLatitude(),
+                location.getLongitude(),
+                timestamp,
+                location.getAccuracy(),
+                (float) location.getAltitude(),
+                event_id,
+                "");
+
+        Log.e(TAG, p.toJson());
     }
 }
