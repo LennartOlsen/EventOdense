@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.nikolai.eventodense.models.ISqlDataModel;
+
 import java.io.Console;
 
 /**
@@ -52,11 +54,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_2, location);
-        contentValues.put(COL_3,System.currentTimeMillis() / 1000L);
+        contentValues.put(COL_3, System.currentTimeMillis() / 1000L);
         long result = db.insert(TABLE_NAME, null, contentValues);
 
         if(result == -1){
             Log.e("ERROR", "An error occured!");
+            return false;
+        } else{
+            return true;
+        }
+    }
+
+    public boolean insertModel(ISqlDataModel m){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.insert(m.getTableName(), null, m.getSQLContentValues());
+
+        if(result == -1){
+            Log.e(TAG, "An error occured! With the code : " + result);
             return false;
         } else{
             return true;

@@ -38,7 +38,6 @@ public class LocationService extends Service {
 
         public LocationListener(String provider)
         {
-            Log.e(TAG, "LocationListener " + provider);
             mLastLocation = new Location(provider);
         }
 
@@ -46,7 +45,9 @@ public class LocationService extends Service {
         public void onLocationChanged(Location location)
         {
             mLastLocation.set(location);
-            LocationHandleIntent.startActionLocationHandle(LocationService.this, location, this.eventId, 123456);
+            long cTime = System.currentTimeMillis() / 1000L;
+            Integer i = (int) (long) cTime;
+            LocationHandleIntent.startActionLocationHandle(LocationService.this, location, eventId, i);
         }
 
         @Override
@@ -68,10 +69,6 @@ public class LocationService extends Service {
         }
     }
 
-    public void StartLocationHandle(){
-
-    }
-
 
 
     LocationListener[] mLocationListeners = new LocationListener[] {
@@ -83,6 +80,8 @@ public class LocationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         Log.e(TAG, "onStartCommand");
+        Log.e(TAG, intent.getStringExtra(this.EVENTID));
+        Log.e(TAG, this.toString());
         this.eventId = intent.getStringExtra(this.EVENTID);
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
