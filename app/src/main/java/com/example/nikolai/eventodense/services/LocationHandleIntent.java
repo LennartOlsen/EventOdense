@@ -6,8 +6,9 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import com.example.nikolai.eventodense.models.Point;
-import com.example.nikolai.eventodense.utils.DeviceUUID;
+import com.example.nikolai.eventodense.models.Point.Point;
+import com.example.nikolai.eventodense.models.Point.PointHttpRepository;
+import com.example.nikolai.eventodense.models.Point.PointSQLRepository;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -61,7 +62,8 @@ public class LocationHandleIntent extends IntentService {
      * parameters.
      */
     private void handleActionLocationHandle(Location location, String event_id, int timestamp) {
-
+        PointSQLRepository repos;
+        repos = new PointSQLRepository(this);
         Point p = new Point("",
                 location.getLatitude(),
                 location.getLongitude(),
@@ -70,7 +72,13 @@ public class LocationHandleIntent extends IntentService {
                 (float) location.getAltitude(),
                 event_id,
                 "");
-
-        Log.e(TAG, p.toJson());
+        Boolean res = repos.save(p);
+        Log.e(TAG, "SAVING : " + res.toString());
+        if(repos.count() > 100){
+            Integer c = repos.count();
+            Log.e(TAG, "number of rows in db : is over 100 count(" + c + ")");
+            PointHttpRepository httpRepository = new PointHttpRepository();
+            httpRepository.save(repos.get());
+        }
     }
 }

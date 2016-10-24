@@ -1,26 +1,19 @@
-package com.example.nikolai.eventodense.models;
+package com.example.nikolai.eventodense.models.Point;
 
 /**
  * Created by lennartolsen on 17/10/2016.
  */
 
-import android.content.ContentValues;
+import com.example.nikolai.eventodense.models.IDataModel;
 
 import java.util.UUID;
 
 /**
  * Supposed to be expandable in time
  */
-public class Point extends DataModel implements ISqlDataModel {
+public class Point implements IDataModel {
 
     private static final String TYPE = "point";
-
-    /** Holy smokes not having statics in interfaces sucks **/
-    private static final String TABLE_NAME = "locations";
-
-    public String getTableName() {
-        return TABLE_NAME;
-    }
 
     protected String id;
     protected double lat;
@@ -42,33 +35,6 @@ public class Point extends DataModel implements ISqlDataModel {
         this.altitude = altitude;
         this.eventId = eventId;
         this.deviceId = deviceId;
-    }
-
-    public String createDBString(){
-        return "CREATE TABLE" + TABLE_NAME + "" +
-                "(id TEXT PRIMARY KEY, " +
-                "lat REAL, " +
-                "lng REAL, " +
-                "timestamp INTEGER, " +
-                "accuracy REAL, " +
-                "altitude REAL, " +
-                "eventId String, " +
-                "deviceId String)";
-    }
-
-    public ContentValues getSQLContentValues(){
-        ContentValues cv = new ContentValues();
-
-        cv.put("id", this.getId());
-        cv.put("lat", this.getLat());
-        cv.put("lng", this.getLng());
-        cv.put("timestamp", this.getTimestamp());
-        cv.put("accuracy", this.getAccuracy());
-        cv.put("altitude", this.getAltitude());
-        cv.put("eventId", this.getEventId());
-        cv.put("deviceId", this.getDeviceId());
-
-        return cv;
     }
 
     public String getId() {

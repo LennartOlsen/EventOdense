@@ -24,7 +24,6 @@ public class LocationService extends Service {
      * Starts this service to perform action Foo with the given parameters. If
      * the service is already performing a task this action will be queued.
      */
-    // TODO: Customize helper method
     public static void startLocationService(Context context, String eventID) {
         Intent intent = new Intent(context, LocationService.class);
         intent.putExtra(EVENTID, eventID);
@@ -81,7 +80,6 @@ public class LocationService extends Service {
     {
         Log.e(TAG, "onStartCommand");
         Log.e(TAG, intent.getStringExtra(this.EVENTID));
-        Log.e(TAG, this.toString());
         this.eventId = intent.getStringExtra(this.EVENTID);
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;

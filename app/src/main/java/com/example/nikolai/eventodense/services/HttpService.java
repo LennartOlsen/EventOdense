@@ -66,7 +66,6 @@ public class HttpService extends IntentService {
      * parameters.
      */
     private void handleActionGet(String url) {
-        // TODO: Handle action Foo
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
