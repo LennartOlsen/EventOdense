@@ -5,6 +5,8 @@ package com.example.nikolai.eventodense.models.Point;
  */
 
 import com.example.nikolai.eventodense.models.IDataModel;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.UUID;
 
@@ -15,14 +17,37 @@ public class Point implements IDataModel {
 
     private static final String TYPE = "point";
 
-    protected String id;
-    protected double lat;
-    protected double lng;
-    protected int timestamp;
-    protected float accuracy;
-    protected float altitude;
-    protected String eventId;
-    protected String deviceId;
+    @SerializedName("id")
+    @Expose
+    private String id;
+
+    @SerializedName("lat")
+    @Expose
+    private double lat;
+
+    @SerializedName("lng")
+    @Expose
+    private double lng;
+
+    @SerializedName("timestamp")
+    @Expose
+    private int timestamp;
+
+    @SerializedName("accuracy")
+    @Expose
+    private float accuracy;
+
+    @SerializedName("altitude")
+    @Expose
+    private float altitude;
+
+    @SerializedName("eventId")
+    @Expose
+    private String eventId;
+
+    @SerializedName("deviceId")
+    @Expose
+    private String deviceId;
 
     public Point(){}
 

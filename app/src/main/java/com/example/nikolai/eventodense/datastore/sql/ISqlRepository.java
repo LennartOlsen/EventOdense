@@ -1,31 +1,33 @@
 package com.example.nikolai.eventodense.datastore.sql;
 
-import android.content.ContentValues;
-
-import com.example.nikolai.eventodense.models.IDataModel;
-import com.example.nikolai.eventodense.models.IRepository;
-
 import java.util.ArrayList;
 
 /**
  * Created by lennartolsen on 24/10/2016.
  */
 
-public interface ISqlRepository extends IRepository {
-    String getTableName();
+public abstract class ISqlRepository<Type> {
+    public abstract String getTableName();
 
     /**
      * Builds the SQL for the database
      * @return sql string
      */
-    String createDBString();
+    public abstract String createDBString();
 
-    @Override
-    IDataModel get(String id);
+    public abstract Type get(String id);
 
-    @Override
-    ArrayList<IDataModel> get();
+    public abstract ArrayList<Type> get();
 
-    @Override
-    Boolean save(IDataModel p);
+    public abstract Boolean save(Type p);
+    public abstract Boolean save(ArrayList<Type> p);
+
+    /**
+     * Get limit
+     * @param count
+     * @return list of models
+     */
+    public abstract ArrayList<Type> get(int count);
+
+    public abstract int count();
 }

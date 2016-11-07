@@ -1,23 +1,20 @@
 package com.example.nikolai.eventodense.datastore.http;
 
-import com.example.nikolai.eventodense.models.IDataModel;
-import com.example.nikolai.eventodense.models.IRepository;
-
 import java.util.ArrayList;
+
+import retrofit2.Callback;
 
 /**
  * Created by lennartolsen on 24/10/2016.
  */
 
-public interface IHttpRepository extends IRepository {
-    String getEndpoint();
+public abstract class IHttpRepository<Type> {
 
-    @Override
-    IDataModel get(String id);
+    public abstract Type get(String id);
 
-    @Override
-    ArrayList<IDataModel> get();
+    public abstract ArrayList<Type> get();
 
-    @Override
-    Boolean save(IDataModel p);
+    public abstract void save(Type p, Callback<Type[]> cb);
+
+    public abstract void save(ArrayList<Type> p, Callback<ArrayList<Type>> cb);
 }

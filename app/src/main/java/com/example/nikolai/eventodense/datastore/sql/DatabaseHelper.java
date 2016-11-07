@@ -75,14 +75,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getModel(ISqlRepository repos, int limit){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor resultSet = db.rawQuery("SELECT * FROM " + repos.getTableName() + " LIMIT " + limit + " ORDER BY timestamp ASC" ,null);
+        Cursor resultSet = db.rawQuery("SELECT * FROM " + repos.getTableName() + " ORDER BY timestamp ASC" + " LIMIT " + limit ,null);
         resultSet.moveToFirst();
         return resultSet;
     }
 
     public boolean deleteModel(ISqlRepository repos, int limit){
         SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete(repos.getTableName(), "id in (SELECT id FROM " + repos.getTableName() + " LIMIT "+ limit + " ORDER BY timestamp ASC)", new String[]{});
+        int result = db.delete(repos.getTableName(), "id in (SELECT id FROM " + repos.getTableName() + " ORDER BY timestamp ASC" + " LIMIT "+ limit + ")", new String[]{});
 
         if(result != limit){
             Log.e(TAG, "Delete did not go as expeceted, deleted : " + result + " rows");

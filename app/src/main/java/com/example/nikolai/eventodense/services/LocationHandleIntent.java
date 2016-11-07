@@ -4,11 +4,18 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 import android.location.Location;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.example.nikolai.eventodense.models.Point.Point;
 import com.example.nikolai.eventodense.models.Point.PointHttpRepository;
 import com.example.nikolai.eventodense.models.Point.PointSQLRepository;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -62,7 +69,7 @@ public class LocationHandleIntent extends IntentService {
      * parameters.
      */
     private void handleActionLocationHandle(Location location, String event_id, int timestamp) {
-        PointSQLRepository repos;
+        final PointSQLRepository repos;
         repos = new PointSQLRepository(this);
         Point p = new Point("",
                 location.getLatitude(),
@@ -71,14 +78,38 @@ public class LocationHandleIntent extends IntentService {
                 location.getAccuracy(),
                 (float) location.getAltitude(),
                 event_id,
-                "");
+                getDeviceId());
         Boolean res = repos.save(p);
         Log.e(TAG, "SAVING : " + res.toString());
-        if(repos.count() > 100){
+
+        /**
+         * TODO: WHat if local repos holds a lot of entries? Offload them all.
+         */
+
+        if(repos.count() > repos.getMaxBatchSize()){
             Integer c = repos.count();
-            Log.e(TAG, "number of rows in db : is over 100 count(" + c + ")");
+            Log.e(TAG, "number of rows in db : is over " + repos.getMaxBatchSize() + " count(" + c + ")");
             PointHttpRepository httpRepository = new PointHttpRepository();
-            httpRepository.save(repos.get());
+
+            /** TODO: Handle different scenarioes **/
+            httpRepository.save(repos.get(repos.getMaxBatchSize()), new Callback<ArrayList<Point>>() {
+                @Override
+                public void onResponse(Call<ArrayList<Point>> call, Response<ArrayList<Point>> response) {
+                    Log.e(TAG, "Saved Points to server");
+                    repos.offload(repos.getMaxBatchSize());
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<Point>> call, Throwable t) {
+                    Log.e(TAG, "Something went south");
+
+                }
+            });
         }
+    }
+
+    private String getDeviceId(){
+        TelephonyManager tManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        return tManager.getDeviceId();
     }
 }

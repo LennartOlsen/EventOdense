@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by lennartolsen on 21/10/2016.
  */
 
-public class PointSQLRepository implements ISqlRepository {
+public class PointSQLRepository extends ISqlRepository<Point> {
 
     private DatabaseHelper _helper;
     private DatabaseHelper dbh;
@@ -25,9 +25,12 @@ public class PointSQLRepository implements ISqlRepository {
         return TABLE_NAME;
     }
 
+    private static final int MAX_BATCH_SIZE = 10;
+    public int getMaxBatchSize(){ return MAX_BATCH_SIZE; }
+
     /**
      * DO NOT USE THIS CONSTRUCTOR
-     * Used purely for telling the DAtabaseHelper my TABLE_NAME when constructing DBS
+     * Used purely for telling the DatabaseHelper my TABLE_NAME when constructing DBS
      * Solutions are welcome
      */
     public PointSQLRepository(){}
@@ -45,9 +48,25 @@ public class PointSQLRepository implements ISqlRepository {
     }
 
     @Override
-    public ArrayList<IDataModel> get() {
+    public ArrayList<Point> get() {
         Cursor res = _helper.getModel(this);
-        ArrayList<IDataModel> points = new ArrayList<IDataModel>();
+        ArrayList<Point> points = new ArrayList<Point>();
+        while(!res.isAfterLast()){
+            points.add(FromSQLToModel(res));
+            res.moveToNext();
+        }
+        return points;
+    }
+
+    /**
+     * Gets the a finite number of datamodels limited pr timestamp
+     * @param limit
+     * @return
+     */
+    @Override
+    public ArrayList<Point> get(int limit) {
+        Cursor res = _helper.getModel(this, limit);
+        ArrayList<Point> points = new ArrayList<Point>();
         while(!res.isAfterLast()){
             points.add(FromSQLToModel(res));
             res.moveToNext();
@@ -56,7 +75,7 @@ public class PointSQLRepository implements ISqlRepository {
     }
 
     @Override
-    public Boolean save(IDataModel model) {
+    public Boolean save(Point model) {
         ContentValues values = this.FromModelToSQL(model);
         return _helper.insert(this, values);
     }
@@ -73,7 +92,7 @@ public class PointSQLRepository implements ISqlRepository {
      * @return
      */
     @Override
-    public Boolean save(ArrayList<IDataModel> models) {
+    public Boolean save(ArrayList<Point> models) {
         Boolean rtn = true;
         for (IDataModel p:
              models) {
@@ -85,9 +104,9 @@ public class PointSQLRepository implements ISqlRepository {
         return rtn;
     }
 
-    public ArrayList<IDataModel> offload(int count){
+    public ArrayList<Point> offload(int count){
         Cursor res = _helper.getModel(this, count);
-        ArrayList<IDataModel> points = new ArrayList<IDataModel>();
+        ArrayList<Point> points = new ArrayList<Point>();
         while(!res.isAfterLast()){
             points.add(FromSQLToModel(res));
             res.moveToNext();

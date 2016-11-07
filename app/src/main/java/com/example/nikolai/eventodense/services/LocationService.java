@@ -15,6 +15,7 @@ public class LocationService extends Service {
     private static final String EVENTID = "com.example.nikolai.eventodense.services.extra.LocationService.EventID";
 
     private LocationManager mLocationManager = null;
+    /** TODO: FIGURE OUT DISTANCE AND INTERVAL **/
     private static final int LOCATION_INTERVAL = 0;//1000;
     private static final float LOCATION_DISTANCE = 0;//10f;
 

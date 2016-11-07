@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if(handleLocationPermissions()){
+        if(handleLocationPermissions() && handlePhoneStatePermission()){
             startLocationService();
         }
     }
@@ -65,6 +66,23 @@ public class MainActivity extends AppCompatActivity {
         } else {
             consent = true;
         }
+        return consent;
+    }
+
+    protected boolean handlePhoneStatePermission(){
+        boolean consent = false;
+
+        if (ContextCompat.checkSelfPermission( this, Manifest.permission.READ_PHONE_STATE ) != PackageManager.PERMISSION_GRANTED ) {
+
+            ActivityCompat.requestPermissions( this,
+                    new String[] {
+                            android.Manifest.permission.READ_PHONE_STATE
+                    },
+                    1);
+            consent = false;
+        } else {
+            consent = true;
+        }
 
         return consent;
     }
@@ -79,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         //Call out location service starter if all is good thank fuck for api-24 n' up
-        if(allowed.contains(Manifest.permission.ACCESS_COARSE_LOCATION) && allowed.contains(Manifest.permission.ACCESS_FINE_LOCATION)){
+        if(allowed.contains(Manifest.permission.ACCESS_COARSE_LOCATION) && allowed.contains(Manifest.permission.ACCESS_FINE_LOCATION) && allowed.contains(Manifest.permission.READ_PHONE_STATE)){
             startLocationService();
         }
     }
@@ -107,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * TODO : Handle eventIds properly
+     * TODO : Handle eventIds properly, Consider first starting this activty when a "TILE" is selected
      */
     private void startLocationService(){
         LocationService.startLocationService(this, "EventOdense");
