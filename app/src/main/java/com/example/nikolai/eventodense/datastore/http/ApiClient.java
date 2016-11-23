@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     /** BASE_URL NEEDS TO BE UPDATED ACCORDINGLY MEMBER TRAILING SLASHES YOYO*/
-    public static final String BASE_URL = "http://10.0.2.2:8080/";
+    public static final String BASE_URL = "http://88.99.34.33:8080/";
 
     private static Retrofit retrofit = null;
 

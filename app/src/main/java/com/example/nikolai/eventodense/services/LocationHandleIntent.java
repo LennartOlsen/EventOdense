@@ -71,6 +71,15 @@ public class LocationHandleIntent extends IntentService {
     private void handleActionLocationHandle(Location location, String event_id, int timestamp) {
         final PointSQLRepository repos;
         repos = new PointSQLRepository(this);
+
+        /**
+         * TODO: Implement geofencing/timestamping, also implement events
+         */
+        /*event = eventrepos.getById(event_id);
+        if(!event.PointIsValid(location.getAccuracy(), location.getLatitude(), location.getLongitude(), timestamp)){
+            return;
+        }*/
+
         Point p = new Point("",
                 location.getLatitude(),
                 location.getLongitude(),
@@ -96,13 +105,14 @@ public class LocationHandleIntent extends IntentService {
                 @Override
                 public void onResponse(Call<ArrayList<Point>> call, Response<ArrayList<Point>> response) {
                     Log.e(TAG, "Saved Points to server");
+                    Log.e(TAG, "Response " + response.message());
                     repos.offload(repos.getMaxBatchSize());
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<Point>> call, Throwable t) {
                     Log.e(TAG, "Something went south");
-
+                    Log.e(TAG, t.getMessage());
                 }
             });
         }
