@@ -1,4 +1,4 @@
-package com.example.nikolai.eventodense.models.Event.Point;
+package com.example.nikolai.eventodense.models.Event;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,6 +12,10 @@ import java.util.ArrayList;
 
 /**
  * Created by lennartolsen on 21/10/2016.
+ */
+
+/**
+ * TODO : IMPLEMENT AND UPDATE ME!!!!
  */
 
 public class EventSQLRepository extends ISqlRepository<Event> {
@@ -71,7 +75,7 @@ public class EventSQLRepository extends ISqlRepository<Event> {
             events.add(FromSQLToModel(res));
             res.moveToNext();
         }
-        return points;
+        return events;
     }
 
     @Override

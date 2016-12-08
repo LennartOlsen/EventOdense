@@ -9,28 +9,34 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.nikolai.eventodense.components.EventAdapter;
+import com.example.nikolai.eventodense.models.Event.Event;
+import com.example.nikolai.eventodense.models.Event.EventHttpRepository;
 import com.example.nikolai.eventodense.services.LocationService;
-import com.example.nikolai.eventodense.datastore.sql.DatabaseHelper;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    DatabaseHelper db;
+    private ArrayList<Event> events = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private EventAdapter eventAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        //db = new DatabaseHelper(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        handleEvents();
 
         if(handleLocationPermissions() && handlePhoneStatePermission()){
             startLocationService();
@@ -129,5 +137,39 @@ public class MainActivity extends AppCompatActivity {
      */
     private void startLocationService(){
         LocationService.startLocationService(this, "EventOdense");
+    }
+
+    private void handleEvents(){
+        Log.e("SUCCES", "Call on meeeeeee");
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        eventAdapter = new EventAdapter(events);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(eventAdapter);
+
+        /**
+         * Events API
+         */
+        EventHttpRepository eventApi = new EventHttpRepository();
+        eventApi.get(new Callback<ArrayList<Event>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
+                Log.e("SUCCESS", "Getting the events");
+                ArrayList<Event> tempEvents = response.body();
+
+                for (Event tempEvent:
+                     tempEvents) {
+                    events.add(tempEvent);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
+                Log.e("ERROR", t.toString());
+            }
+        });
+
     }
 }

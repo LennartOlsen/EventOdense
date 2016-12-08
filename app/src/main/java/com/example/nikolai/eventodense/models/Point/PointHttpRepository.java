@@ -32,8 +32,7 @@ public class PointHttpRepository extends IHttpRepository<Point> {
     }
 
     @Override
-    public ArrayList<Point> get() {
-        return null;
+    public void get(Callback<ArrayList<Point>> cb) {
     }
 
     @Override

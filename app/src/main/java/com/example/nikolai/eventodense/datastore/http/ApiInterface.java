@@ -1,5 +1,6 @@
 package com.example.nikolai.eventodense.datastore.http;
 
+import com.example.nikolai.eventodense.models.Event.Event;
 import com.example.nikolai.eventodense.models.IDataModel;
 import com.example.nikolai.eventodense.models.Point.Point;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -21,4 +23,7 @@ import retrofit2.http.Query;
 public interface ApiInterface {
     @POST("points")
     Call<ArrayList<Point>> createPoints(@Body ArrayList<Point> points);
+
+    @GET("events")
+    Call<ArrayList<Event>> getEvents();
 }

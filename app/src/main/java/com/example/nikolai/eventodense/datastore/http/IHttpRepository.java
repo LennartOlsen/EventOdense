@@ -12,7 +12,7 @@ public abstract class IHttpRepository<Type> {
 
     public abstract Type get(String id);
 
-    public abstract ArrayList<Type> get();
+    public abstract void get(Callback<ArrayList<Type>> cb);
 
     public abstract void save(Type p, Callback<Type[]> cb);
 

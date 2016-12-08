@@ -29,8 +29,9 @@ public class EventHttpRepository extends IHttpRepository<Event> {
     }
 
     @Override
-    public ArrayList<Event> get() {
-        return null;
+    public void get(Callback<ArrayList<Event>> CallBack) {
+        Call<ArrayList<Event>> call = api.getEvents();
+        call.enqueue(CallBack);
     }
 
     @Override

@@ -10,9 +10,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.UUID;
 
-/**
- * Supposed to be expandable in time
- */
 public class Event implements IDataModel {
 
     private static final String TYPE = "event";
@@ -29,43 +26,51 @@ public class Event implements IDataModel {
     @Expose
     private double lng;
 
-    @SerializedName("timestamp")
+    @SerializedName("startTime")
     @Expose
-    private int timestamp;
+    private int startTime;
 
-    @SerializedName("accuracy")
+    @SerializedName("endTime")
     @Expose
-    private float accuracy;
+    private int endTime;
 
-    @SerializedName("altitude")
+    @SerializedName("name")
     @Expose
-    private float altitude;
+    private String name;
 
-    @SerializedName("eventId")
+    @SerializedName("description")
     @Expose
-    private String eventId;
+    private String description;
 
-    @SerializedName("deviceId")
+    @SerializedName("imageId")
     @Expose
-    private String deviceId;
+    private String imageId;
 
-    public Event(){}
+    @SerializedName("radius")
+    @Expose
+    private int radius;
 
-    public Event(String id, double lat, double lng, int timestamp, float accuracy, float altitude, String eventId, String deviceId) {
+    @SerializedName("color")
+    @Expose
+    private String color;
+
+    public Event(String id, double lat, double lng, int startTime, int endTime, String name, String description, String imageId, int radius, String color) {
         this.id = id;
         this.lat = lat;
         this.lng = lng;
-        this.timestamp = timestamp;
-        this.accuracy = accuracy;
-        this.altitude = altitude;
-        this.eventId = eventId;
-        this.deviceId = deviceId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.name = name;
+        this.description = description;
+        this.imageId = imageId;
+        this.radius = radius;
+        this.color = color;
+    }
+
+    public Event() {
     }
 
     public String getId() {
-        if(this.id ==  null || this.id.equals("") ){
-            this.id = UUID.randomUUID().toString();
-        }
         return id;
     }
 
@@ -89,43 +94,59 @@ public class Event implements IDataModel {
         this.lng = lng;
     }
 
-    public int getTimestamp() {
-        return timestamp;
+    public int getStartTime() {
+        return startTime;
     }
 
-    public void setTimestamp(int timestamp) {
-        this.timestamp = timestamp;
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
     }
 
-    public float getAccuracy() {
-        return accuracy;
+    public int getEndTime() {
+        return endTime;
     }
 
-    public void setAccuracy(float accuracy) {
-        this.accuracy = accuracy;
+    public void setEndTime(int endTime) {
+        this.endTime = endTime;
     }
 
-    public float getAltitude() {
-        return altitude;
+    public String getName() {
+        return name;
     }
 
-    public void setAltitude(float altitude) {
-        this.altitude = altitude;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getEventId() {
-        return eventId;
+    public String getDescription() {
+        return description;
     }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getImageId() {
+        return imageId;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }
