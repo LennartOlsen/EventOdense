@@ -16,8 +16,8 @@ public class LocationService extends Service {
 
     private LocationManager mLocationManager = null;
     /** TODO: FIGURE OUT DISTANCE AND INTERVAL **/
-    private static final int LOCATION_INTERVAL = 0;//1000;
-    private static final float LOCATION_DISTANCE = 0;//10f;
+    private static final int LOCATION_INTERVAL = 20;//1000;
+    private static final float LOCATION_DISTANCE = 10f;//10f;
 
     private String eventId;
 

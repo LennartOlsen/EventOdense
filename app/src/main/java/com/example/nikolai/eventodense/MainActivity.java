@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -37,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mActionBarToolbar);
+        getSupportActionBar().setTitle("Event Odense");
 
         handleEvents();
 
@@ -127,11 +132,10 @@ public class MainActivity extends AppCompatActivity {
      * TODO : Handle eventIds properly, Consider first starting this activty when a "TILE" is selected
      */
     private void startLocationService(){
-        LocationService.startLocationService(this, "EventOdense");
+        LocationService.startLocationService(this, "sducolarun");
     }
 
     private void handleEvents(){
-        Log.e("SUCCES", "Call on meeeeeee");
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         eventAdapter = new EventAdapter(events);
@@ -149,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
                 Log.e("SUCCESS", "Getting the events");
                 ArrayList<Event> tempEvents = response.body();
-
+                Log.e("SUCCESS", "Got : " + response.message());
                 for (Event tempEvent:
                      tempEvents) {
                     events.add(tempEvent);
