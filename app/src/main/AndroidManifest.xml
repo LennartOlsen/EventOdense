@@ -28,10 +28,12 @@
         <service
             android:name=".services.LocationService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:stopWithTask="true" />
         <service
             android:name=".services.LocationHandleIntent"
-            android:exported="false" />
+            android:exported="false"
+            android:stopWithTask="true"/>
 
         <activity android:name=".TileActivity"></activity>
     </application>

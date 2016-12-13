@@ -55,7 +55,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     public void onBindViewHolder(EventViewHolder holder, int position) {
         Event event = mDataset.get(position);
         holder.name.setText(event.getName());
-        holder.start_time.setText(Integer.toString(event.getStartTime()));
+        holder.start_time.setText((event.getStartTimeAsDate()));
         holder.description.setText(event.getDescription());
     }
 
