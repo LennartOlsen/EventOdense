@@ -1,7 +1,6 @@
-package com.example.nikolai.eventodense.components;
+package com.example.nikolai.eventodense.components.EventView;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import java.util.List;
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
     private static final String TAG = "EVENT_ADAPTER";
     private List<Event> mDataset;
+    private RecyclerView mRecyclerView;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -45,10 +45,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         // create a new view
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.event_list_row, parent, false);
-
         // set the view's size, margins, paddings and layout parameters
-        EventViewHolder vh = new EventViewHolder(itemView);
-        return vh;
+        return new EventViewHolder(itemView);
     }
 
     @Override

@@ -10,15 +10,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.nikolai.eventodense.TileActivity">
 
-    <Spinner
-        android:id="@+id/menu_spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="59dp"
+        android:id="@+id/textView" />
 
-    </ScrollView>
-
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="115dp"
+        android:id="@+id/textViewDescription" />
 </RelativeLayout>

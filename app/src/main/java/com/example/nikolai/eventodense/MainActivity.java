@@ -2,9 +2,9 @@ package com.example.nikolai.eventodense;
 
 
 import android.Manifest;
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.ActivityCompat;
@@ -17,8 +17,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.example.nikolai.eventodense.components.EventAdapter;
+import com.example.nikolai.eventodense.components.EventView.EventAdapter;
+import com.example.nikolai.eventodense.components.EventView.EventItemClickListener;
 import com.example.nikolai.eventodense.models.Event.Event;
 import com.example.nikolai.eventodense.models.Event.EventHttpRepository;
 import com.example.nikolai.eventodense.services.LocationService;
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Event> events = new ArrayList<>();
     private RecyclerView recyclerView;
     private EventAdapter eventAdapter;
+    public final static String EXTRA_MESSAGE = "MainActivity.Extra_Message";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +172,24 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        recyclerView.addOnItemTouchListener(new EventItemClickListener(this,recyclerView,new EventItemClickListener.OnItemClickListener(){
 
+            @Override
+            public void onItemClick(View view, int position) {
+                int itemPosition = recyclerView.getChildLayoutPosition(view);
+
+                String item = events.get(itemPosition).getName();
+                Intent intent = new Intent(view.getContext(), TileActivity.class);
+                intent.putExtra(EXTRA_MESSAGE, events.get(itemPosition));
+                startActivity(intent);
+
+                /*Toast.makeText(view.getContext(), item, Toast.LENGTH_LONG).show();*/
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        }));
     }
 }
